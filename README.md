@@ -13,4 +13,10 @@ The directory layout:
 
 
 
+## TODO:
 
+1. Figure out if we can avoid using the precompiled header.
+2. Setup repo settings for team.
+3. Find out what version of g++ the server has.
+4. pick a decent C++ style guildline.
+5. Decide on build system if needed.
