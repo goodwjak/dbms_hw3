@@ -2,7 +2,12 @@
 
   {
     "directory": "/media/ronin/gs002/Documents/classes/2023/winter/cs440/hw/hw3/dbms_hw3/",
-    "command": "avr-gcc -std=c11 -g -Wall -I/usr/include/c++/11 -c -o file.o file.c",
+    "command": "avr-gcc -std=c11 -g -Wall -I/usr/include/x86_64-linux-gnu/c++/11/bits/stdc++.h -c -o file.o file.c",
+    "file": "./*.c" 
+  },
+  {
+    "directory": "/media/ronin/gs002/Documents/classes/2023/winter/cs440/hw/hw3/dbms_hw3/",
+    "command": "avr-gcc -std=c11 -g -Wall -I./pch/bits/stdc++.h.gch -c -o file.o file.c",
     "file": "./*.c" 
   }
 ]
