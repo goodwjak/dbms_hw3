@@ -4,6 +4,7 @@
 // are filled. This process will continue until all of Emp.csv is read.
 
 //#include <bits/stdc++.h>
+#include <cstdio>
 #include <iostream>
 #include <fstream>
 #include <cstdlib>
@@ -16,6 +17,8 @@ using namespace std;
 #define buffer_size 22
 #define BLOCK_SIZE 56       //Size in bytes
 #define TMP_DIR /tmp
+
+unsigned int runs = 0;      //global for tracking runs
 
 struct EmpRecord {
     int eid;
@@ -61,6 +64,39 @@ void Print_Buffers(int cur_size) {
     }
 }
 
+
+
+
+/*
+ * Input: Sorted Array of pointers to EmpRecords
+ * Output: Returns 0 on sucess
+ * Description: Stores the sorted blocks into temp files
+ */
+unsigned int store_in_tmp_files(EmpRecord *buff_seq[buffer_size]) { 
+    //create new file for this run.
+    std::string tmp_filename = "../data/run_" + std::to_string(runs);
+
+    //open the file.
+    ofstream tmpfile;
+    tmpfile.open(tmp_filename, ios::out | ios::app);
+
+    //write to the file handle
+    //This is a bit verbose, but I think it's very understandable in 
+    //this format.
+    for(int i = 0; i < buffer_size; i++) {
+        tmpfile << std::to_string(buff_seq[i]->eid) + ",";
+        tmpfile << buff_seq[i]->ename + ",";
+        tmpfile << std::to_string(buff_seq[i]->age) + ",";
+        tmpfile << std::to_string(buff_seq[i]->salary) + "\n";
+    }
+
+    //Close the file we just finished working with.
+    tmpfile.close(); 
+
+    return 0;
+}
+
+
 // Sort the buffers in main memory based on 'eid' and then store those sorted records in
 // a temporary file on disk (create a run and store it as a file on disk).
 // You can change the return type and arguments as you see fit. 
@@ -101,19 +137,11 @@ void Sort_in_Main_Memory(){
 
     //By now the pointers in the buff_seq array should be least to greatest.
     
+    store_in_tmp_files(buff_seq);
+
 
 }
 
-/*
- * Input: pointer to buffer to write. 
- * Output: Returns 0 on sucess
- * Description: Stores the sorted blocks into files
- */
-unsigned int store_in_tmp_files() {
-    //might want to have it check for unix permissions on stuff. 
-
-    return 0;
-}
 
 
 // Merges your M-1 runs (from disk) using the buffers in main memory and stores them in 
