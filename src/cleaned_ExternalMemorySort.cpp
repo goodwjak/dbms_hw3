@@ -68,15 +68,39 @@ void Sort_in_Main_Memory(){
     cout << "Sorting Not Implemented" << endl;
     return;
 
-    //I'm assuming that actually rearranging the blocks in memory could be
-    //more expensive than just using a indexing array to dictate write order.
-    unsigned int write_order[buffer_size] = {};
+    //create a list of pointers to the buffer.
+    EmpRecord *buff_seq[buffer_size] = {};
 
-    //Loop through blocks
+    //Init the buffer sequence to the current order of them.
     for(int i = 0; i < buffer_size; i++) {
-        //sort the blocks.
-        
+        //set the pointers to the addresses.
+        buff_seq[i] = &buffers[i];
     }
+
+
+    //Now we can start to sort the buffers/blocks in main memory.
+    //We avoid having to do expensive copies by using pointers for our
+    //buffer sequence instead of moving the stucts around.
+    
+    for(int i = 0; i < buffer_size - 1; i++) {
+        for(int j = i+1; j < buffer_size; j++) {
+            //check if we should swap the two based on size of ID.
+            if(buff_seq[i]->eid < buff_seq[j]->eid) {
+                //Then we swap the positions in the sequence buffer.
+                EmpRecord *tmp = buff_seq[i];
+                buff_seq[i] = buff_seq[j];
+                buff_seq[j] = tmp;
+            }
+            else {
+                continue;
+            }
+        }
+        //End of for loop
+    }
+    //End of for loop
+
+    //By now the pointers in the buff_seq array should be least to greatest.
+    
 
 }
 
