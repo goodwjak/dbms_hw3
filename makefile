@@ -34,4 +34,5 @@ clean:
 	rm ${OUT}
 	rm ${BIN}
 	rm ./data/run_*
+	rm ./data/EmpSorted.csv
 
