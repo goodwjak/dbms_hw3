@@ -67,7 +67,14 @@ void Print_Buffers(int cur_size) {
 }
 
 
-
+/*
+ * Input: None,
+ * Output: None,
+ * Description: deletes the temp files used during sorting.
+ */
+void remove_temp_files(void) {
+    std::cout << "remove_temp_files(), not yet implimented!" << std::endl;
+}
 
 /*
  * Input: Sorted Array of pointers to EmpRecords
@@ -158,17 +165,17 @@ void Merge_Runs_in_Main_Memory(){
 }
 
 int main() {
-  // open file streams to read and write
-  fstream input_file;
-  input_file.open("./data/Emp.csv", ios::in);
+    // open file streams to read and write
+    fstream input_file;
+    input_file.open("./data/Emp.csv", ios::in);
  
-  // flags to check when relations are done being read
-  bool flag = true;
-  int cur_size = 0;
-  
-  /*First Pass: The following loop will read each block, put it into main_memory,
-    sort them, and then will put write them to a temporary file (as a run) for 2nd pass */
-  while (flag) {
+    // flags to check when relations are done being read
+    bool flag = true;
+    int cur_size = 0;
+    
+    /*First Pass: The following loop will read each block, put it into main_memory,
+        sort them, and then will put write them to a temporary file (as a run) for 2nd pass */
+    while (flag) {
       // FOR BLOCK IN RELATION EMP
 
       // grabs a block
@@ -194,26 +201,28 @@ int main() {
           cur_size = 0;
           buffers[cur_size] = single_EmpRecord;
           cur_size += 1;
-      }
+        }
       
-  }
-  input_file.close();
+    }//END OF WHILE
+    input_file.close();
   
-  /* Implement 2nd Pass: Read the temporary sorted files (runs) and sort them as discussed in class. 
-	 Write the final output (fully sorted Emp relation) to EmpSorted.csv*/
+    /* Implement 2nd Pass: Read the temporary sorted files (runs) and sort them as discussed in class. 
+     Write the final output (fully sorted Emp relation) to EmpSorted.csv*/
+    
 
-  // Uncomment when you are ready to store the sorted relation
-  // fstream sorted_file;  
-  // sorted_file.open("EmpSorted.csv", ios::out | ios::app);
 
-  // Pseudocode
-  bool flag_sorting_done = false;
-  while(!flag_sorting_done){
-      Merge_Runs_in_Main_Memory();
-      break;
-  }
+    // Uncomment when you are ready to store the sorted relation
+    // fstream sorted_file;  
+    // sorted_file.open("EmpSorted.csv", ios::out | ios::app);
+
+    // Pseudocode
+    bool flag_sorting_done = false;
+    while(!flag_sorting_done){
+        Merge_Runs_in_Main_Memory();
+        break;
+    }
   
-  // You can delete the temporary sorted files (runs) after you're done in order to keep things clean and tidy.
-
+    // You can delete the temporary sorted files (runs) after you're done in order to keep things clean and tidy.
+    remove_temp_files();
   return 0;
 }
