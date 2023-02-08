@@ -190,7 +190,7 @@ void Merge_Runs_in_Main_Memory(){
     while(true) {
         //more pointer crud, allows us to avoid actually moving structs around.
         EmpRecord *smallest_record_ptr;
-
+        int selected_record_index = -1;
         //do this for all the possible records from the runs.
 
         //Read in a block for each run.
@@ -210,8 +210,10 @@ void Merge_Runs_in_Main_Memory(){
             
             //init the smallest_record_ptr and account for the
             //possibility that the current buffer index is a EOF
-            if(buffers[i].eid >= 0)
+            if(buffers[i].eid >= 0) {
                 smallest_record_ptr = &buffers[i];
+                selected_record_index = i;
+            }
             else
                 smallest_record_ptr = &bigest;
             
@@ -228,6 +230,7 @@ void Merge_Runs_in_Main_Memory(){
                 //If it's smaller than the rest, we point to it.
                 else if(smallest_record_ptr->eid > buffers[j].eid) {
                     smallest_record_ptr = &buffers[j];
+                    selected_record_index = j; 
                 }
 
                 //Nothing to do, already found the correct record.
@@ -244,6 +247,13 @@ void Merge_Runs_in_Main_Memory(){
         }
         //now that we have the smallest one, we toss it into the file.
         append_to_sorted(smallest_record_ptr);
+
+        //read in the next struct from the select run.
+        fstream selected_run;
+        std::string run_name = "run_" + std::to_string(selected_record_index);
+        selected_run.open(run_name);
+        buffers[selected_record_index] = Grab_Emp_Record(selected_run);
+        selected_run.close();
 
     }//END OF WHILE LOOP
     //at this point all the stuff should be done.
