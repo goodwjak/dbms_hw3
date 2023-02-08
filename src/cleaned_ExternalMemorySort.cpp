@@ -20,6 +20,8 @@ using namespace std;
 
 unsigned int runs = 0;      //global for tracking runs
 
+
+//The packing order of this struct could be better. It's not current alligned.
 struct EmpRecord {
     int eid;
     string ename;
@@ -72,9 +74,12 @@ void Print_Buffers(int cur_size) {
  * Output: Returns 0 on sucess
  * Description: Stores the sorted blocks into temp files
  */
-unsigned int store_in_tmp_files(EmpRecord *buff_seq[buffer_size]) { 
+unsigned int store_in_tmp_files(EmpRecord *buff_seq[buffer_size]) {
     //create new file for this run.
     std::string tmp_filename = "../data/run_" + std::to_string(runs);
+    
+    //DEBUGGING
+    std::cout << "filename: " << tmp_filename << std::endl;
 
     //open the file. No error checking at the moment. Not enough time.
     ofstream tmpfile;
@@ -92,6 +97,9 @@ unsigned int store_in_tmp_files(EmpRecord *buff_seq[buffer_size]) {
 
     //Close the file we just finished working with.
     tmpfile.close(); 
+    
+    //update the global runs.
+    runs++;
 
     return 0;
 }
@@ -101,8 +109,6 @@ unsigned int store_in_tmp_files(EmpRecord *buff_seq[buffer_size]) {
 // a temporary file on disk (create a run and store it as a file on disk).
 // You can change the return type and arguments as you see fit. 
 void Sort_in_Main_Memory(){
-    cout << "Sorting Not Implemented" << endl;
-    return;
 
     //create a list of pointers to the buffer.
     EmpRecord *buff_seq[buffer_size] = {};
@@ -182,7 +188,8 @@ int main() {
           cout << "Main Memory is full. Time to sort and store sorted blocks in a temporary file" << endl;
           Print_Buffers(buffer_size);
           //SortMain("Attributes You Want");
-          
+        Sort_in_Main_Memory();   
+
           // After sorting, start again. Clear memory and put the current tuple into main memory.
           cur_size = 0;
           buffers[cur_size] = single_EmpRecord;
