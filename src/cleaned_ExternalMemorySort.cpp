@@ -99,7 +99,7 @@ unsigned int store_in_tmp_files(EmpRecord *buff_seq[buffer_size]) {
     tmpfile.close(); 
     
     //update the global runs.
-    runs++;
+    runs += 1;
 
     return 0;
 }
@@ -186,7 +186,7 @@ int main() {
       else{
           // Memory is now full. Sort the tuples in Main Memory and store them in a temporary file (runs)
           cout << "Main Memory is full. Time to sort and store sorted blocks in a temporary file" << endl;
-          Print_Buffers(buffer_size);
+          //Print_Buffers(buffer_size);
           //SortMain("Attributes You Want");
         Sort_in_Main_Memory();   
 
