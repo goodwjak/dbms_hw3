@@ -14,6 +14,7 @@ using namespace std;
 
 //defines how many buffers are available in the Main Memory 
 #define buffer_size 22
+#define BLOCK_SIZE 56       //Size in bytes
 
 struct EmpRecord {
     int eid;
