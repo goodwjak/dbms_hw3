@@ -245,7 +245,7 @@ void Merge_Runs_in_Main_Memory(){
 
         //read in the next struct from the select run.
         fstream selected_run;
-        std::string run_name = "run_" + std::to_string(selected_record_index);
+        std::string run_name = "./data/run_" + std::to_string(selected_record_index);
         selected_run.open(run_name);
         buffers[selected_record_index] = Grab_Emp_Record(selected_run);
         selected_run.close();
