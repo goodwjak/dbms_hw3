@@ -181,7 +181,17 @@ void append_to_sorted(EmpRecord *smallest_record_ptr) {
 // a sorted file called 'EmpSorted.csv'(The Final Output File).
 // You can change the return type and arguments as you see fit.
 void Merge_Runs_in_Main_Memory(){
-    
+
+    //Read in a block for each run.
+    for(int i = 0; i <= runs; i++) {
+        std::string fname = "run_" + std::to_string(i);
+        fstream run_file;
+        run_file.open(fname, ios::in);
+      
+        //store the block/record in this case into the buffer that matches i. 
+        buffers[i] =  Grab_Emp_Record(run_file);
+    }
+
     //we use this to default the starting pointer to max possible eid
     EmpRecord bigest;
     bigest.eid = INT_MAX;
@@ -192,18 +202,6 @@ void Merge_Runs_in_Main_Memory(){
         EmpRecord *smallest_record_ptr;
         int selected_record_index = -1;
         //do this for all the possible records from the runs.
-
-        //Read in a block for each run.
-        for(int i = 0; i <= runs; i++) {
-            std::string fname = "run_" + std::to_string(i);
-            fstream run_file;
-            run_file.open(fname, ios::in);
-          
-            //need to check for eof
-
-            //store the block/record in this case into the buffer that matches i. 
-            buffers[i] =  Grab_Emp_Record(run_file);
-        }
 
         //Now sort through the availble ones.
         for(int i = 0; i < buffer_size; i++) {
