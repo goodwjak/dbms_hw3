@@ -176,12 +176,7 @@ void append_to_sorted(EmpRecord *smallest_record_ptr) {
     sorted_file.close();
 }
 
-
-// Merges your M-1 runs (from disk) using the buffers in main memory and stores them in 
-// a sorted file called 'EmpSorted.csv'(The Final Output File).
-// You can change the return type and arguments as you see fit.
-void Merge_Runs_in_Main_Memory(){
-
+void load_first_block_of_runs() {
     //Read in a block for each run.
     for(int i = 0; i <= runs; i++) {
         std::string fname = "./data/run_" + std::to_string(i);
@@ -194,7 +189,15 @@ void Merge_Runs_in_Main_Memory(){
     
     std::cout << "\n\nShowing current buffer iteration:" << std::endl;
     Print_Buffers(runs);
+}
 
+
+// Merges your M-1 runs (from disk) using the buffers in main memory and stores them in 
+// a sorted file called 'EmpSorted.csv'(The Final Output File).
+// You can change the return type and arguments as you see fit.
+void Merge_Runs_in_Main_Memory(){
+
+    load_first_block_of_runs();
 
     //we use this to default the starting pointer to max possible eid
     EmpRecord bigest;
@@ -235,7 +238,7 @@ void Merge_Runs_in_Main_Memory(){
         
         //check if we have emptied all the runs.
         //we can tell, by the smallest_record_ptr showing max value.
-        if(smallest_record_ptr->eid == INT_MAX) {
+        if(smallest_record_ptr->eid == INT_MAX || selected_record_index == -1) {
             break;
         }
 
@@ -246,7 +249,7 @@ void Merge_Runs_in_Main_Memory(){
         //read in the next struct from the select run.
         fstream selected_run;
         std::string run_name = "./data/run_" + std::to_string(selected_record_index);
-        selected_run.open(run_name);
+        selected_run.open(run_name, ios::in);
         buffers[selected_record_index] = Grab_Emp_Record(selected_run);
         selected_run.close();
 
