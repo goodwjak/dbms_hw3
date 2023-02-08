@@ -19,7 +19,7 @@ using namespace std;
 #define buffer_size 22
 #define BLOCK_SIZE 56       //Size in bytes
 
-const std::string sorted_fname = "EmpSorted.csv";
+const std::string sorted_fname = "./data/EmpSorted.csv";
 const std::string data_dir = "./data/";
 
 int runs = 0;      //global for tracking runs
