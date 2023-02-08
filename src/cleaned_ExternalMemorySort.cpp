@@ -65,6 +65,9 @@ void Print_Buffers(int cur_size) {
 void Sort_in_Main_Memory(){
     cout << "Sorting Not Implemented" << endl;
     return;
+
+    //Need to compare the data between differnt blocks 22 in total rightn now.
+    unsigned int block_index = 0;
 }
 
 // Merges your M-1 runs (from disk) using the buffers in main memory and stores them in 
