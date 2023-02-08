@@ -6,7 +6,7 @@
     "file": "./*.cpp" 
   },
   {
-    "directory": "~/gs002/Documents/classes/2023/winter/cs440/hw/hw3/dbms_hw3/",
+    "directory": "/home/ronin/gs002_jake/Documents/classes/2023/winter/cs440/hw/hw3/dbms_hw3/",
     "command": "g++ -std=c++11 -g -Wall -I/usr/local/lib/gcc12/include/c++/x86_64-portbld-freebsd13.1/bits/stdc++.h -c -o file.o file.cpp",
     "file": "./*.cpp" 
   },
