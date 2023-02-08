@@ -32,7 +32,6 @@ release:${IN}
 clean:
 	echo "Cleaning the debug/bin folders"
 	rm ${OUT}
-	rm ${BIN}
 	rm ./data/run_*
 	rm ./data/EmpSorted.csv
-
+	rm ${BIN}
