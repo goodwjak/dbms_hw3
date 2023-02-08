@@ -6,7 +6,7 @@ CC= g++
 DEBUGGER= gdb 
 
 NAME=prog
-IN= ./src/ExternalMemorySort.cpp
+IN= ./src/cleaned_ExternalMemorySort.cpp
 OUT= ./build/${NAME} 
 BIN= ./build/bin/${NAME}
 CFLAG= -std=c++11 -O0  -Wall
