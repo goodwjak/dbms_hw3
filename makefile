@@ -2,14 +2,14 @@
 SHELL= /bin/sh
 
 #OBJS =  main.o factorial.o hello.o
-CC= clang 
-DEBUGGER= lldb-14
+CC= g++ 
+DEBUGGER= gdb 
 
 NAME=prog
 IN= ./src/ExternalMemorySort.cpp
 OUT= ./build/${NAME} 
 BIN= ./build/bin/${NAME}
-CFLAG= -std=c++11 -O0  -Weverything
+CFLAG= -std=c++11 -O0  -Wall
 INCLUDE=-I"/usr/local/include/"
 LIBS=
 
