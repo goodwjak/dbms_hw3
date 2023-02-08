@@ -77,7 +77,7 @@ void Merge_Runs_in_Main_Memory(){
 int main() {
   // open file streams to read and write
   fstream input_file;
-  input_file.open("Emp.csv", ios::in);
+  input_file.open("../data/Emp.csv", ios::in);
  
   // flags to check when relations are done being read
   bool flag = true;
