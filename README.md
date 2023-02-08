@@ -15,8 +15,7 @@ The directory layout:
 
 ## TODO:
 
-1. Figure out if we can avoid using the precompiled header.
-2. Setup repo settings for team.
-3. Find out what version of g++ the server has.
-4. pick a decent C++ style guildline.
-5. Decide on build system if needed.
+1. Test and debug 2-pass merge sort.
+2. Test it using OSU servers.
+3. Clean the code so it's not so nasty.
+4. Work on the other code issues.
