@@ -15,6 +15,7 @@ using namespace std;
 //defines how many buffers are available in the Main Memory 
 #define buffer_size 22
 #define BLOCK_SIZE 56       //Size in bytes
+#define TMP_DIR /tmp
 
 struct EmpRecord {
     int eid;
@@ -67,9 +68,29 @@ void Sort_in_Main_Memory(){
     cout << "Sorting Not Implemented" << endl;
     return;
 
-    //Need to compare the data between differnt blocks 22 in total rightn now.
-    unsigned int block_index = 0;
+    //I'm assuming that actually rearranging the blocks in memory could be
+    //more expensive than just using a indexing array to dictate write order.
+    unsigned int write_order[buffer_size] = {};
+
+    //Loop through blocks
+    for(int i = 0; i < buffer_size; i++) {
+        //sort the blocks.
+        
+    }
+
 }
+
+/*
+ * Input: pointer to buffer to write. 
+ * Output: Returns 0 on sucess
+ * Description: Stores the sorted blocks into files
+ */
+unsigned int store_in_tmp_files() {
+    //might want to have it check for unix permissions on stuff. 
+
+    return 0;
+}
+
 
 // Merges your M-1 runs (from disk) using the buffers in main memory and stores them in 
 // a sorted file called 'EmpSorted.csv'(The Final Output File).
