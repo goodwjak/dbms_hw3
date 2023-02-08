@@ -191,6 +191,10 @@ void Merge_Runs_in_Main_Memory(){
         //store the block/record in this case into the buffer that matches i. 
         buffers[i] =  Grab_Emp_Record(run_file);
     }
+    
+    std::cout << "\n\nShowing current buffer iteration:" << std::endl;
+    Print_Buffers(runs);
+
 
     //we use this to default the starting pointer to max possible eid
     EmpRecord bigest;
@@ -203,46 +207,39 @@ void Merge_Runs_in_Main_Memory(){
         int selected_record_index = -1;
         //do this for all the possible records from the runs.
 
-        //Now sort through the availble ones.
-        for(int i = 0; i < buffer_size; i++) {
             
-            //init the smallest_record_ptr and account for the
-            //possibility that the current buffer index is a EOF
-            if(buffers[i].eid >= 0) {
-                smallest_record_ptr = &buffers[i];
-                selected_record_index = i;
+        //init the smallest_record_ptr to maximum size
+        smallest_record_ptr = &bigest;
+        
+       
+        //loop and compare current smallest to all other eids in buffers 
+        for(int j = 0; j < runs; j++) {
+
+            //check that the buffer for a run hasn't run out.
+            if(buffers[j].eid == -1) {
+                continue;
             }
-            else
-                smallest_record_ptr = &bigest;
-            
-           
-            //loop and compare current smallest to all other eids in buffers 
-            for(int j = i+1; j < buffer_size; j++) {
 
-                //check that the buffer for a run hasn't run out.
-                if(buffers[i].eid == -1) {
-                    continue;
-                }
+            //If it's smaller than the rest, we point to it.
+            else if(smallest_record_ptr->eid > buffers[j].eid) {
+                smallest_record_ptr = &buffers[j];
+                selected_record_index = j; 
+            }
 
+            //Nothing to do, already found the correct record.
+            else {
+                continue;
+            }
+        }//END OF FOR LOOP 1
 
-                //If it's smaller than the rest, we point to it.
-                else if(smallest_record_ptr->eid > buffers[j].eid) {
-                    smallest_record_ptr = &buffers[j];
-                    selected_record_index = j; 
-                }
-
-                //Nothing to do, already found the correct record.
-                else {
-                    continue;
-                }
-            }//END OF FOR LOOP 1
-        }//END OF FOR LOOP 0
         
         //check if we have emptied all the runs.
         //we can tell, by the smallest_record_ptr showing max value.
         if(smallest_record_ptr->eid == INT_MAX) {
             break;
         }
+
+
         //now that we have the smallest one, we toss it into the file.
         append_to_sorted(smallest_record_ptr);
 
