@@ -294,19 +294,21 @@ int main() {
     /* Implement 2nd Pass: Read the temporary sorted files (runs) and sort them as discussed in class. 
      Write the final output (fully sorted Emp relation) to EmpSorted.csv*/
     
-
-
     // Uncomment when you are ready to store the sorted relation
     // fstream sorted_file;  
     // sorted_file.open("EmpSorted.csv", ios::out | ios::app);
 
     // Pseudocode
-    bool flag_sorting_done = false;
-    while(!flag_sorting_done){
-        Merge_Runs_in_Main_Memory();
-        break;
-    }
-  
+    //bool flag_sorting_done = false;
+    //while(!flag_sorting_done){
+    //    Merge_Runs_in_Main_Memory();
+    //    break;
+    //}
+
+
+    //I just decided to keep all the merge handling in their own functions.
+    Merge_Runs_in_Main_Memory();    
+
     // You can delete the temporary sorted files (runs) after you're done in order to keep things clean and tidy.
     remove_temp_files();
   return 0;
