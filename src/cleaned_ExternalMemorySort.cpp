@@ -10,13 +10,17 @@
 #include <cstdlib>
 #include <string>
 #include <sstream>
+#include <limits>
+#include <sys/limits.h>
 
 using namespace std;
 
 //defines how many buffers are available in the Main Memory 
 #define buffer_size 22
 #define BLOCK_SIZE 56       //Size in bytes
-#define TMP_DIR /tmp
+
+const std::string sorted_fname = "EmpSorted.csv";
+const std::string data_dir = "./data/";
 
 unsigned int runs = 0;      //global for tracking runs
 
@@ -155,13 +159,94 @@ void Sort_in_Main_Memory(){
 
 }
 
+//ideally this would have a check for the file and some exception handling
+//but, meh. It's a one off and time crunch
+void append_to_sorted(EmpRecord *smallest_record_ptr) {
+    fstream sorted_file;
+    
+    //open in append mode.
+    sorted_file.open(sorted_fname, ios::out | ios::app);
+    
+    sorted_file << std::to_string(smallest_record_ptr->eid) + ",";
+    sorted_file << smallest_record_ptr->ename + ",";
+    sorted_file << std::to_string(smallest_record_ptr->age) + ",";
+    sorted_file << std::to_string(smallest_record_ptr->salary) + "\n";
+
+    //close the file.
+    sorted_file.close();
+}
 
 
 // Merges your M-1 runs (from disk) using the buffers in main memory and stores them in 
 // a sorted file called 'EmpSorted.csv'(The Final Output File).
 // You can change the return type and arguments as you see fit.
 void Merge_Runs_in_Main_Memory(){
-    cout << "Merging Not Implemented" << endl;
+    
+    //we use this to default the starting pointer to max possible eid
+    EmpRecord bigest;
+    bigest.eid = INT_MAX;
+    
+    //Keep looping until all the emp.eid values show endof file.
+    while(true) {
+        //more pointer crud, allows us to avoid actually moving structs around.
+        EmpRecord *smallest_record_ptr;
+
+        //do this for all the possible records from the runs.
+
+        //Read in a block for each run.
+        for(int i = 0; i <= runs; i++) {
+            std::string fname = "run_" + std::to_string(i);
+            fstream run_file;
+            run_file.open(fname, ios::in);
+          
+            //need to check for eof
+
+            //store the block/record in this case into the buffer that matches i. 
+            buffers[i] =  Grab_Emp_Record(run_file);
+        }
+
+        //Now sort through the availble ones.
+        for(int i = 0; i < buffer_size; i++) {
+            
+            //init the smallest_record_ptr and account for the
+            //possibility that the current buffer index is a EOF
+            if(buffers[i].eid >= 0)
+                smallest_record_ptr = &buffers[i];
+            else
+                smallest_record_ptr = &bigest;
+            
+           
+            //loop and compare current smallest to all other eids in buffers 
+            for(int j = i+1; j < buffer_size; j++) {
+
+                //check that the buffer for a run hasn't run out.
+                if(buffers[i].eid == -1) {
+                    continue;
+                }
+
+
+                //If it's smaller than the rest, we point to it.
+                else if(smallest_record_ptr->eid > buffers[j].eid) {
+                    smallest_record_ptr = &buffers[j];
+                }
+
+                //Nothing to do, already found the correct record.
+                else {
+                    continue;
+                }
+            }//END OF FOR LOOP 1
+        }//END OF FOR LOOP 0
+        
+        //check if we have emptied all the runs.
+        //we can tell, by the smallest_record_ptr showing max value.
+        if(smallest_record_ptr->eid == INT_MAX) {
+            break;
+        }
+        //now that we have the smallest one, we toss it into the file.
+        append_to_sorted(smallest_record_ptr);
+
+    }//END OF WHILE LOOP
+    //at this point all the stuff should be done.
 }
 
 int main() {
