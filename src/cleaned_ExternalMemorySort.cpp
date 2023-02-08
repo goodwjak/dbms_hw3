@@ -76,7 +76,7 @@ void Print_Buffers(int cur_size) {
  */
 unsigned int store_in_tmp_files(EmpRecord *buff_seq[buffer_size]) {
     //create new file for this run.
-    std::string tmp_filename = "../data/run_" + std::to_string(runs);
+    std::string tmp_filename = "./data/run_" + std::to_string(runs);
     
     //DEBUGGING
     std::cout << "filename: " << tmp_filename << std::endl;
@@ -127,7 +127,7 @@ void Sort_in_Main_Memory(){
     for(int i = 0; i < buffer_size - 1; i++) {
         for(int j = i+1; j < buffer_size; j++) {
             //check if we should swap the two based on size of ID.
-            if(buff_seq[i]->eid < buff_seq[j]->eid) {
+            if(buff_seq[i]->eid > buff_seq[j]->eid) {
                 //Then we swap the positions in the sequence buffer.
                 EmpRecord *tmp = buff_seq[i];
                 buff_seq[i] = buff_seq[j];
@@ -160,7 +160,7 @@ void Merge_Runs_in_Main_Memory(){
 int main() {
   // open file streams to read and write
   fstream input_file;
-  input_file.open("../data/Emp.csv", ios::in);
+  input_file.open("./data/Emp.csv", ios::in);
  
   // flags to check when relations are done being read
   bool flag = true;
@@ -188,7 +188,7 @@ int main() {
           cout << "Main Memory is full. Time to sort and store sorted blocks in a temporary file" << endl;
           //Print_Buffers(buffer_size);
           //SortMain("Attributes You Want");
-        Sort_in_Main_Memory();   
+          Sort_in_Main_Memory();   
 
           // After sorting, start again. Clear memory and put the current tuple into main memory.
           cur_size = 0;
