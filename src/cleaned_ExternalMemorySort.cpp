@@ -76,7 +76,7 @@ unsigned int store_in_tmp_files(EmpRecord *buff_seq[buffer_size]) {
     //create new file for this run.
     std::string tmp_filename = "../data/run_" + std::to_string(runs);
 
-    //open the file.
+    //open the file. No error checking at the moment. Not enough time.
     ofstream tmpfile;
     tmpfile.open(tmp_filename, ios::out | ios::app);
 
