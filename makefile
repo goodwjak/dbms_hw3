@@ -33,4 +33,5 @@ clean:
 	echo "Cleaning the debug/bin folders"
 	rm ${OUT}
 	rm ${BIN}
+	rm ./data/run_*
 
