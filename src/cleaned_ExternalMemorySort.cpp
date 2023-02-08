@@ -22,7 +22,7 @@ using namespace std;
 const std::string sorted_fname = "EmpSorted.csv";
 const std::string data_dir = "./data/";
 
-unsigned int runs = 0;      //global for tracking runs
+int runs = 0;      //global for tracking runs
 
 
 //The packing order of this struct could be better. It's not current alligned.
