@@ -184,7 +184,7 @@ void Merge_Runs_in_Main_Memory(){
 
     //Read in a block for each run.
     for(int i = 0; i <= runs; i++) {
-        std::string fname = "run_" + std::to_string(i);
+        std::string fname = "./data/run_" + std::to_string(i);
         fstream run_file;
         run_file.open(fname, ios::in);
       
