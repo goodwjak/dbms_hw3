@@ -19,7 +19,8 @@ using namespace std;
 #define buffer_size 22
 #define BLOCK_SIZE 56       //Size in bytes
 
-const std::string sorted_fname = "./data/EmpSorted.csv";
+//const std::string sorted_fname = "./data/EmpSorted.csv";
+const std::string sorted_fname = "./EmpSorted.csv";
 const std::string data_dir = "./data/";
 
 int runs = 0;      //global for tracking runs
@@ -77,7 +78,9 @@ void Print_Buffers(int cur_size) {
  * Description: deletes the temp files used during sorting.
  */
 void remove_temp_files() {
+    //Meh, it works
     system("rm ./data/run_*");
+    system("rm ./run_*");
 }
 
 /*
@@ -87,7 +90,7 @@ void remove_temp_files() {
  */
 unsigned int store_in_tmp_files(EmpRecord *buff_seq[buffer_size]) {
     //create new file for this run.
-    std::string tmp_filename = "./data/run_" + std::to_string(runs);
+    std::string tmp_filename = data_dir + "run_" + std::to_string(runs);
     
     //DEBUGGING
     std::cout << "filename: " << tmp_filename << std::endl;
