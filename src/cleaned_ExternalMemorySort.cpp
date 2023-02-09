@@ -205,13 +205,18 @@ void Merge_Runs_in_Main_Memory(){
    
     //where we start reading from.
     unsigned int runs_read_offset[runs];
+    
+    //array of run file handles.
+    fstream run_files[runs];
+    for(int i = 0; i <= runs; i++ ){
+        std::string fname = "./data/run_" + std::to_string(i);
+        run_files[i].open(fname, ios::in);
+    }
 
     //Keep looping until all the emp.eid values show endof file.
     while(true) {
        
-        std::cout << "\n\n Next Iter:" << std::endl;
-        Print_Buffers(runs);
-        
+       
         //more pointer crud, allows us to avoid actually moving structs around.
         EmpRecord *smallest_record_ptr;
         int selected_record_index = -1;
@@ -261,7 +266,7 @@ void Merge_Runs_in_Main_Memory(){
 
         //have to do this, because the offsets would be inconsistent.
         std::string line;
-        for(int i = 0; i < runs_read_offset[selected_record_index]; i++) {
+        for(int i = 1; i < runs_read_offset[selected_record_index] + 1; i++) {
             getline(selected_run, line, '\n');
         }
 
@@ -272,13 +277,17 @@ void Merge_Runs_in_Main_Memory(){
          
         selected_run.close();
 
+        std::cout << "\n\n Next Iter:" << std::endl;
+        Print_Buffers(runs);
         std::cout << "Selected records run: " << selected_record_index << std::endl;
         std::cout << "Run name: " << run_name << std::endl;
         std::cout << "new record eid: " << tmp_rec.eid << std::endl;
-        cin.get();
+        //cin.get();
 
     }//END OF WHILE LOOP
     //at this point all the stuff should be done.
+    //
+    std::cout << "\nMerge finished!" << std::endl;
 }
 
 int main() {
