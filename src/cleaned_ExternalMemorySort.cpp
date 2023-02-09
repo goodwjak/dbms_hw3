@@ -202,9 +202,16 @@ void Merge_Runs_in_Main_Memory(){
     //we use this to default the starting pointer to max possible eid
     EmpRecord bigest;
     bigest.eid = INT_MAX;
-    
+   
+    //where we start reading from.
+    unsigned int runs_read_offset[runs];
+
     //Keep looping until all the emp.eid values show endof file.
     while(true) {
+       
+        std::cout << "\n\n Next Iter:" << std::endl;
+        Print_Buffers(runs);
+        
         //more pointer crud, allows us to avoid actually moving structs around.
         EmpRecord *smallest_record_ptr;
         int selected_record_index = -1;
@@ -242,16 +249,33 @@ void Merge_Runs_in_Main_Memory(){
             break;
         }
 
-
         //now that we have the smallest one, we toss it into the file.
         append_to_sorted(smallest_record_ptr);
+
+        //update_buffer_from_run();
 
         //read in the next struct from the select run.
         fstream selected_run;
         std::string run_name = "./data/run_" + std::to_string(selected_record_index);
         selected_run.open(run_name, ios::in);
-        buffers[selected_record_index] = Grab_Emp_Record(selected_run);
+
+        //have to do this, because the offsets would be inconsistent.
+        std::string line;
+        for(int i = 0; i < runs_read_offset[selected_record_index]; i++) {
+            getline(selected_run, line, '\n');
+        }
+
+        runs_read_offset[selected_record_index] += 1;
+
+        EmpRecord tmp_rec = Grab_Emp_Record(selected_run);
+        buffers[selected_record_index] = tmp_rec;
+         
         selected_run.close();
+
+        std::cout << "Selected records run: " << selected_record_index << std::endl;
+        std::cout << "Run name: " << run_name << std::endl;
+        std::cout << "new record eid: " << tmp_rec.eid << std::endl;
+        cin.get();
 
     }//END OF WHILE LOOP
     //at this point all the stuff should be done.
@@ -319,5 +343,5 @@ int main() {
 
     // You can delete the temporary sorted files (runs) after you're done in order to keep things clean and tidy.
     remove_temp_files();
-  return 0;
+    return 0;
 }
