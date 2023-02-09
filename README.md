@@ -4,7 +4,11 @@
 To run and clone the repo:
 
 ```bash
+#If you're setup for ssh then do the this:
 git clone https://github.com/goodwjak/dbms_hw3.git
+
+#Otherwise this will work.
+git clone git@github.com:goodwjak/dbms_hw3.git
 
 cd ./dbms_hw3
 
