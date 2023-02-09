@@ -176,7 +176,7 @@ void append_to_sorted(EmpRecord *smallest_record_ptr) {
     sorted_file.close();
 }
 
-void append_to_open_file(fstream sorted_file, EmpRecord *emp_ptr) {
+void append_to_open_file(fstream &sorted_file, EmpRecord *emp_ptr) {
     sorted_file << std::to_string(emp_ptr->eid) + ",";
     sorted_file << emp_ptr->ename + ",";
     sorted_file << std::to_string(emp_ptr->age) + ",";
@@ -206,8 +206,6 @@ void close_files(fstream files[], int count) {
 // a sorted file called 'EmpSorted.csv'(The Final Output File).
 // You can change the return type and arguments as you see fit.
 void Merge_Runs_in_Main_Memory(){
-
-
     //we use this to default the starting pointer to max possible eid
     EmpRecord bigest;
     bigest.eid = INT_MAX;
@@ -222,16 +220,11 @@ void Merge_Runs_in_Main_Memory(){
 
     //Open the files all at once.
     for(int i = 0; i < runs; i++ ){
-        std::cout << "index: " << i << std::endl;
         run_file_names[i] = data_dir + "run_" + std::to_string(i);
         run_files[i].open(run_file_names[i], ios::in);
     }
 
-    std::cout << "loading runs..." << std::endl;
     load_first_block_of_runs(run_file_names, run_files);
-    Print_Buffers(runs);
-    std::cout << "starting merge..." << std::endl;
-
 
     //Keep looping until all the emp.eid values show endof file.
     while(true) {
@@ -275,10 +268,9 @@ void Merge_Runs_in_Main_Memory(){
         }
 
         //now that we have the smallest one, we toss it into the file.
-        append_to_sorted(smallest_record_ptr);
-
-        //update_buffer_from_run();
-
+        append_to_open_file(sorted_file, smallest_record_ptr);
+        
+        //update with new block to replace the one we just picked.
         buffers[selected_record_index] = Grab_Emp_Record(run_files[selected_record_index]);
 
     }//END OF WHILE LOOP
