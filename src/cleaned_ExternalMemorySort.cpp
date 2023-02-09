@@ -176,42 +176,46 @@ void append_to_sorted(EmpRecord *smallest_record_ptr) {
     sorted_file.close();
 }
 
-void load_first_block_of_runs() {
+void load_first_block_of_runs(std::string names[], fstream files[]) {
     //Read in a block for each run.
     for(int i = 0; i <= runs; i++) {
-        std::string fname = "./data/run_" + std::to_string(i);
-        fstream run_file;
-        run_file.open(fname, ios::in);
+        files[i].open(names[i], ios::in);
       
         //store the block/record in this case into the buffer that matches i. 
-        buffers[i] =  Grab_Emp_Record(run_file);
+        buffers[i] =  Grab_Emp_Record(files[i]);
     }
     
     std::cout << "\n\nShowing current buffer iteration:" << std::endl;
     Print_Buffers(runs);
 }
 
+void close_files(fstream files[], int count) {
+    for(int i = 0; i <= count; i++) {
+        files[i].close();
+    }
+}
 
 // Merges your M-1 runs (from disk) using the buffers in main memory and stores them in 
 // a sorted file called 'EmpSorted.csv'(The Final Output File).
 // You can change the return type and arguments as you see fit.
 void Merge_Runs_in_Main_Memory(){
 
-    load_first_block_of_runs();
 
     //we use this to default the starting pointer to max possible eid
     EmpRecord bigest;
     bigest.eid = INT_MAX;
    
-    //where we start reading from.
-    unsigned int runs_read_offset[runs];
-    
     //array of run file handles.
     fstream run_files[runs];
+    std::string run_file_names[runs];
+
+    //Open the files all at once.
     for(int i = 0; i <= runs; i++ ){
-        std::string fname = "./data/run_" + std::to_string(i);
-        run_files[i].open(fname, ios::in);
+        run_file_names[i] = "./data/run_" + std::to_string(i);
+        run_files[i].open(run_file_names[i], ios::in);
     }
+
+    load_first_block_of_runs(run_file_names, run_files);
 
     //Keep looping until all the emp.eid values show endof file.
     while(true) {
@@ -259,35 +263,20 @@ void Merge_Runs_in_Main_Memory(){
 
         //update_buffer_from_run();
 
-        //read in the next struct from the select run.
-        fstream selected_run;
-        std::string run_name = "./data/run_" + std::to_string(selected_record_index);
-        selected_run.open(run_name, ios::in);
-
-        //have to do this, because the offsets would be inconsistent.
-        std::string line;
-        for(int i = 1; i < runs_read_offset[selected_record_index] + 1; i++) {
-            getline(selected_run, line, '\n');
-        }
-
-        runs_read_offset[selected_record_index] += 1;
-
-        EmpRecord tmp_rec = Grab_Emp_Record(selected_run);
-        buffers[selected_record_index] = tmp_rec;
-         
-        selected_run.close();
+        buffers[selected_record_index] = Grab_Emp_Record(run_files[selected_record_index]);
 
         std::cout << "\n\n Next Iter:" << std::endl;
         Print_Buffers(runs);
         std::cout << "Selected records run: " << selected_record_index << std::endl;
-        std::cout << "Run name: " << run_name << std::endl;
-        std::cout << "new record eid: " << tmp_rec.eid << std::endl;
+        std::cout << "Run index: " << selected_record_index << std::endl;
+        std::cout << "new record eid: " << buffers[selected_record_index].eid << std::endl;
         //cin.get();
 
     }//END OF WHILE LOOP
     //at this point all the stuff should be done.
     //
     std::cout << "\nMerge finished!" << std::endl;
+    close_files(run_files, runs);
 }
 
 int main() {
