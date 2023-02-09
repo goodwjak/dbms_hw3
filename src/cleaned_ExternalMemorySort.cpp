@@ -76,8 +76,8 @@ void Print_Buffers(int cur_size) {
  * Output: None,
  * Description: deletes the temp files used during sorting.
  */
-void remove_temp_files(void) {
-    std::cout << "remove_temp_files(), not yet implimented!" << std::endl;
+void remove_temp_files() {
+    system("rm ./data/run_*");
 }
 
 /*
@@ -176,6 +176,13 @@ void append_to_sorted(EmpRecord *smallest_record_ptr) {
     sorted_file.close();
 }
 
+void append_to_open_file(fstream sorted_file, EmpRecord *emp_ptr) {
+    sorted_file << std::to_string(emp_ptr->eid) + ",";
+    sorted_file << emp_ptr->ename + ",";
+    sorted_file << std::to_string(emp_ptr->age) + ",";
+    sorted_file << std::to_string(emp_ptr->salary) + "\n";
+}
+
 void load_first_block_of_runs(std::string names[], fstream files[]) {
     //Read in a block for each run.
     for(int i = 0; i < runs; i++) {
@@ -204,7 +211,11 @@ void Merge_Runs_in_Main_Memory(){
     //we use this to default the starting pointer to max possible eid
     EmpRecord bigest;
     bigest.eid = INT_MAX;
-   
+  
+    //create handle for output file.
+    fstream sorted_file;
+    sorted_file.open(sorted_fname, ios::out | ios::app);
+
     //array of run file handles.
     fstream run_files[runs];
     std::string run_file_names[runs];
@@ -212,7 +223,7 @@ void Merge_Runs_in_Main_Memory(){
     //Open the files all at once.
     for(int i = 0; i < runs; i++ ){
         std::cout << "index: " << i << std::endl;
-        run_file_names[i] = "./data/run_" + std::to_string(i);
+        run_file_names[i] = data_dir + "run_" + std::to_string(i);
         run_files[i].open(run_file_names[i], ios::in);
     }
 
@@ -270,24 +281,16 @@ void Merge_Runs_in_Main_Memory(){
 
         buffers[selected_record_index] = Grab_Emp_Record(run_files[selected_record_index]);
 
-        std::cout << "\n\n Next Iter:" << std::endl;
-        Print_Buffers(runs);
-        std::cout << "Selected records run: " << selected_record_index << std::endl;
-        std::cout << "Run index: " << selected_record_index << std::endl;
-        std::cout << "new record eid: " << buffers[selected_record_index].eid << std::endl;
-        //cin.get();
-
     }//END OF WHILE LOOP
-    //at this point all the stuff should be done.
-    //
-    std::cout << "\nMerge finished!" << std::endl;
+    sorted_file.close(); 
     close_files(run_files, runs);
+    //remove_temp_files();
 }
 
 int main() {
     // open file streams to read and write
     fstream input_file;
-    input_file.open("./data/Emp.csv", ios::in);
+    input_file.open(data_dir + "Emp.csv", ios::in);
  
     // flags to check when relations are done being read
     bool flag = true;
@@ -324,23 +327,12 @@ int main() {
         }
       
     }//END OF WHILE
+
     input_file.close();
   
     /* Implement 2nd Pass: Read the temporary sorted files (runs) and sort them as discussed in class. 
      Write the final output (fully sorted Emp relation) to EmpSorted.csv*/
     
-    // Uncomment when you are ready to store the sorted relation
-    // fstream sorted_file;  
-    // sorted_file.open("EmpSorted.csv", ios::out | ios::app);
-
-    // Pseudocode
-    //bool flag_sorting_done = false;
-    //while(!flag_sorting_done){
-    //    Merge_Runs_in_Main_Memory();
-    //    break;
-    //}
-
-
     //I just decided to keep all the merge handling in their own functions.
     Merge_Runs_in_Main_Memory();    
 
