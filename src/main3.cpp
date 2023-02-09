@@ -4,14 +4,17 @@
 // are filled. This process will continue until all of Emp.csv is read.
 
 //#include <bits/stdc++.h>
+
+#define LINUX true
+//#define BSD false
+
 #include <cstdio>
 #include <iostream>
 #include <fstream>
 #include <cstdlib>
 #include <string>
 #include <sstream>
-#include <limits>
-#include <sys/limits.h>
+#include <limits.h>
 
 using namespace std;
 
