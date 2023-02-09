@@ -178,8 +178,8 @@ void append_to_sorted(EmpRecord *smallest_record_ptr) {
 
 void load_first_block_of_runs(std::string names[], fstream files[]) {
     //Read in a block for each run.
-    for(int i = 0; i <= runs; i++) {
-        files[i].open(names[i], ios::in);
+    for(int i = 0; i < runs; i++) {
+        //files[i].open(names[i], ios::in);
       
         //store the block/record in this case into the buffer that matches i. 
         buffers[i] =  Grab_Emp_Record(files[i]);
@@ -190,7 +190,7 @@ void load_first_block_of_runs(std::string names[], fstream files[]) {
 }
 
 void close_files(fstream files[], int count) {
-    for(int i = 0; i <= count; i++) {
+    for(int i = 0; i < count; i++) {
         files[i].close();
     }
 }
@@ -210,12 +210,17 @@ void Merge_Runs_in_Main_Memory(){
     std::string run_file_names[runs];
 
     //Open the files all at once.
-    for(int i = 0; i <= runs; i++ ){
+    for(int i = 0; i < runs; i++ ){
+        std::cout << "index: " << i << std::endl;
         run_file_names[i] = "./data/run_" + std::to_string(i);
         run_files[i].open(run_file_names[i], ios::in);
     }
 
+    std::cout << "loading runs..." << std::endl;
     load_first_block_of_runs(run_file_names, run_files);
+    Print_Buffers(runs);
+    std::cout << "starting merge..." << std::endl;
+
 
     //Keep looping until all the emp.eid values show endof file.
     while(true) {
