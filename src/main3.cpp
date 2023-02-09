@@ -21,7 +21,10 @@ using namespace std;
 
 //const std::string sorted_fname = "./data/EmpSorted.csv";
 const std::string sorted_fname = "./EmpSorted.csv";
-const std::string data_dir = "./data/";
+
+//const std::string data_dir = "/tmp/";
+//const std::string data_dir = "./data/";
+const std::string data_dir = "./";
 
 int runs = 0;      //global for tracking runs
 
