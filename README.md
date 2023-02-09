@@ -1,5 +1,25 @@
 # dbms_hw3
 
+## Instructions:
+To run and clone the repo:
+
+```bash
+git clone https://github.com/goodwjak/dbms_hw3.git
+
+cd ./dbms_hw3
+
+make run
+```
+
+That should be all that's required to build and run the program.
+The only other issues that are super likely is if you don't have the std
+C and C++ libraries availible on your machine.
+
+The program does require access to the "rm" console command as well. So fair
+warning to make sure you don't have anything else in the repo with the name in
+the format "run_\*" as it will YEET that right off your filesystem! :)
+
+
 
 ## Description:
 A bunch of small peices of software to handle storage for DBMS(CS440).
@@ -15,7 +35,7 @@ The directory layout:
 
 ## TODO:
 
-1. Test and debug 2-pass merge sort.
-2. Test it using OSU servers.
-3. Clean the code so it's not so nasty.
-4. Work on the other code issues.
+1. Test and debug 2-pass merge sort.    DONE
+2. Test it using OSU servers.           DONE
+3. Clean the code so it's not so nasty. DONE
+4. Work on the other code issues.       DONE
