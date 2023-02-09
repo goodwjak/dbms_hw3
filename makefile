@@ -5,8 +5,8 @@ SHELL= /bin/sh
 CC= g++ 
 DEBUGGER= gdb 
 
-NAME=prog
-IN= ./src/cleaned_ExternalMemorySort.cpp
+NAME=main3.out
+IN= ./src/main3.cpp
 OUT= ./build/${NAME} 
 BIN= ./build/bin/${NAME}
 CFLAG= -std=c++11 -O0  -Wall
