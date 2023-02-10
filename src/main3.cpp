@@ -85,7 +85,7 @@ void Print_Buffers(int cur_size) {
  */
 void remove_temp_files() {
     //Meh, it works
-    system("rm ./data/run_*");
+    //system("rm ./data/run_*");
     system("rm ./run_*");
 }
 
